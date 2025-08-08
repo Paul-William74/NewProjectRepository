@@ -2,7 +2,11 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+<<<<<<< HEAD
       <module fileurl="file://$PROJECT_DIR$/.idea/PROJECT-BACK_END-REMOTE_KAMOGELO.iml" filepath="$PROJECT_DIR$/.idea/PROJECT-BACK_END-REMOTE_KAMOGELO.iml" />
+=======
+      <module fileurl="file://$PROJECT_DIR$/.idea/FINAL IFM2B.iml" filepath="$PROJECT_DIR$/.idea/FINAL IFM2B.iml" />
+>>>>>>> other/master
     </modules>
   </component>
 </project>
