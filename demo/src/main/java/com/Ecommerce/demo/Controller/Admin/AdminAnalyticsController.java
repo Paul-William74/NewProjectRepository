@@ -23,11 +23,6 @@ public class AdminController {
         return null;
     }
 
-    @DeleteMapping("/removeProduct/{admin_id}")
-    public ResponseEntity<?> removeProduct(@PathVariable final Long admin_id) {
-        return null;
-    }
-
 
     @GetMapping("/getAnalytics/{admin_id}")
     public ResponseEntity<?> getAdminAnalytics(@PathVariable final Long admin_id) {
