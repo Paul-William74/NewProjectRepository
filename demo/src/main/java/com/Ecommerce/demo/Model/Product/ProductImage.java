@@ -27,6 +27,13 @@ public final class ProductImage {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private MATERIAL material;
+
+
+    public ProductImage(MATERIAL material, Product product, String imgUrl) {
+        this.material = material;
+        this.product = product;
+        this.imgUrl = imgUrl;
+    }
 }
 
 

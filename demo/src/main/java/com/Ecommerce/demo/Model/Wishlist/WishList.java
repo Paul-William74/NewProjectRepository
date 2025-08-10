@@ -8,7 +8,7 @@ import lombok.Data;
 
 @Entity
 @Table(
-        uniqueConstraints = @UniqueConstraint(columnNames = {"customer_id", "product_size_id"})
+        uniqueConstraints = @UniqueConstraint(columnNames = {"customer_id", "product_size_id", "material"})
 )
 @Data
 public final class WishList {

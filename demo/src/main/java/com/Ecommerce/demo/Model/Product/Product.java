@@ -1,12 +1,13 @@
 package com.Ecommerce.demo.Model.Product;
 
 
-import com.Ecommerce.demo.Model.Compare.ProductsCompare;
+
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
-import org.springframework.data.annotation.LastModifiedDate;
+
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -17,6 +18,7 @@ import java.util.Set;
 @Entity
 @NoArgsConstructor
 @Data
+@AllArgsConstructor
 public final class Product {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,12 +36,6 @@ public final class Product {
     @Column(nullable = false)
     private boolean isActive = true;
 
-    @Column(nullable = false)
-    private Double basePrice;
-
-    @Column(nullable = false)
-    private Double discountPercentage = 0.0;
-
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private JEWELERY_TYPE jeweleryType;
@@ -48,8 +44,9 @@ public final class Product {
     private LocalDateTime createdAt;
 
     @CollectionTable(name = "product_gemstones", joinColumns = @JoinColumn(name = "product_id"))
-    @ElementCollection(targetClass = String.class)
-    private Set<GEMSTONE> gemStones = new HashSet<>();
+    @ElementCollection(targetClass = GEMSTONE.class)
+    @Enumerated(EnumType.STRING)
+    private final Set<GEMSTONE> gemStones = new HashSet<>();
 
     /// one to many relationships
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -58,8 +55,12 @@ public final class Product {
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private final List<ProductImage> productImages = new LinkedList<>(); // List of images associated with this product
 
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private final List<ProductPrice> productPrices = new LinkedList<>();
 
-
-
-
+    public Product(String name, String description, JEWELERY_TYPE jeweleryType) {
+        this.name = name;
+        this.description = description;
+        this.jeweleryType = jeweleryType;
+    }
 }

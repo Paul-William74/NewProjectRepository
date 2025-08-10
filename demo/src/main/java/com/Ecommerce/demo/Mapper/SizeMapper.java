@@ -17,5 +17,4 @@ public abstract class SizeMapper {
     abstract AboutSize toAboutSize(ProductSize productSize);
     abstract List<AboutSize> toAboutSizes(List<ProductSize> productSizes);
 
-
 }

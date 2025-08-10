@@ -24,16 +24,16 @@ public abstract class CartMapper {
     @Autowired private Sorter sorter;
 
 
-    public String mapPrice(CartItem cartItem) {
-
-        Product product = cartItem.getProductSize().getProduct();
-        if(product.isOnDiscount()) {
-
-            Double discountedPrice = product.getBasePrice() - (product.getBasePrice() * product.getDiscountPercentage() / 100);
-            return formatter.getFormattedPrice(discountedPrice); //if the product is on discount
-        }
-        return formatter.getFormattedPrice(product.getBasePrice()); //if the product is not on discount
-    }
+//    public String mapPrice(CartItem cartItem) {
+//
+//
+//        if(cartItem.getProductSize().isOnDiscount()) {
+//
+//            Double discountedPrice = cartItem.getProductSize().getBasePrice() - (product.getBasePrice() * product.getDiscountPercentage() / 100);
+//            return formatter.getFormattedPrice(discountedPrice); //if the product is on discount
+//        }
+//        return formatter.getFormattedPrice(product.getBasePrice()); //if the product is not on discount
+//    }
 
     public int mapQuantity(CartItem cartItem) {
         return cartItem.getQuantity();
@@ -66,7 +66,6 @@ public abstract class CartMapper {
 
 
     @Mappings({
-            @Mapping(target = "price", expression = "java(mapPrice(cartItem))"),
             @Mapping(target= "quantity", expression = "java(mapQuantity(cartItem))"),
             @Mapping(target = "name", expression = "java(mapName(cartItem))"),
             @Mapping(target = "size", expression = "java(mapSize(cartItem))"),

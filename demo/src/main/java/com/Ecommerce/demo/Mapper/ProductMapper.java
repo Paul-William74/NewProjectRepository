@@ -5,7 +5,11 @@ import com.Ecommerce.demo.Components.Formatter;
 import com.Ecommerce.demo.DTO.Product.About.ProductAdditionalInformation;
 import com.Ecommerce.demo.DTO.Product.About.RecommendedProduct;
 import com.Ecommerce.demo.DTO.Product.About.AboutProduct;
-import com.Ecommerce.demo.DTO.Register.ProductRegisterDTO;
+import com.Ecommerce.demo.DTO.Product.Admin.AdminProduct;
+import com.Ecommerce.demo.DTO.Product.Admin.AdminProductSize;
+import com.Ecommerce.demo.DTO.Register.Product.ProductRegisterDTO;
+import com.Ecommerce.demo.DTO.Register.Product.ProductSizeRegisterDTO;
+import com.Ecommerce.demo.Exception.Enum.JewelleryTyeDoesNotExistException;
 import com.Ecommerce.demo.Model.Product.*;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -26,11 +30,6 @@ public abstract class ProductMapper {
     @Autowired private Formatter formatter;
 
 
-    abstract Product toProduct(ProductRegisterDTO productRegisterDTO);
-
-    abstract RecommendedProduct toRecommendedProduct(Product product);
-
-    abstract List<RecommendedProduct> toRecommendedProducts(List<Product> products);
 
     @Named("mapGemStones")
     List<String> mapGemStones(Set<GEMSTONE> gemstones) {
@@ -73,7 +72,6 @@ public abstract class ProductMapper {
     }
 
 
-
     /// product additional information mapper
     @Mappings({
             @Mapping(target = "gemstones", source = "gemStones", qualifiedByName = "mapGemStones"), //map the gemstones to a list of strings
@@ -85,11 +83,59 @@ public abstract class ProductMapper {
 
     /// product about mapper
     @Mappings({
-        @Mapping(target = "price", source = "basePrice", qualifiedByName = "priceMapping"), //map the price to a formatted string
-        @Mapping(target = "discountPrice", source = "basePrice",qualifiedByName = "discountMapping"), //map the discounted price
         @Mapping(target = "materialImages", source = "productImages", qualifiedByName = "mapMaterialImageMap"),
         @Mapping(target = "gemstones", source = "gemStones", qualifiedByName = "mapGemStones"), //map the gemstones to a list of strings
     })
     public abstract AboutProduct toAboutProduct(Product product);
+
+
+    public  Product toProduct(ProductRegisterDTO productRegisterDTO) throws JewelleryTyeDoesNotExistException {
+
+        Product product = new Product(
+                productRegisterDTO.getName(),
+                productRegisterDTO.getDescription(),
+                JEWELERY_TYPE.getJewelleryTypeFromLabel(productRegisterDTO.getJeweleryType())
+        );
+
+        for(String label : productRegisterDTO.getGemStones())
+            product.getGemStones().add( GEMSTONE.getGemStoneFromLabel(label));
+
+        return product;
+
+    }
+
+
+    public abstract RecommendedProduct toRecommendedProduct(Product product);
+
+    public abstract List<RecommendedProduct> toRecommendedProducts(List<Product> products);
+
+
+//    public AdminProduct toAdminProduct(Product product) {
+//
+//        AdminProduct adminProduct = new AdminProduct(
+//                product.getId(),
+//                product.getName(),
+//                product.getDescription(),
+//                product.getJeweleryType().getType()
+//        );
+//        for(ProductSize productSize: product.getProductSizes())
+//            adminProduct.getProductSizes().add(
+//                    new AdminProductSize(
+//                            productSize.getId(),
+//                            getSizesWithMaterials(productSize)
+//                    )
+//            );
+//        return adminProduct;
+//    }
+
+//    public AdminProductSize toAdminProductSize(ProductSize productSize) {
+//        return new AdminProductSize(
+//                productSize.getId(),
+//                getSizesWithMaterials(productSize)
+//        );
+//    }
+
+
+    public abstract List<AdminProduct> toAdminProducts(List<Product> products);
 
 }

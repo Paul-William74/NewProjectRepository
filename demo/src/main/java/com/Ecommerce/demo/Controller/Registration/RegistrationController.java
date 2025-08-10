@@ -1,15 +1,14 @@
 package com.Ecommerce.demo.Controller.Registration;
 
-import com.Ecommerce.demo.DTO.Register.ProductRegisterDTO;
+import com.Ecommerce.demo.DTO.Register.Product.ProductImageRegisterDTO;
+import com.Ecommerce.demo.DTO.Register.Product.ProductRegisterDTO;
+import com.Ecommerce.demo.DTO.Register.Product.ProductSizeRegisterDTO;
 import com.Ecommerce.demo.DTO.Register.UserRegisterDTO;
 import com.Ecommerce.demo.Service.RegistrationService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -39,4 +38,20 @@ public class RegistrationController {
     public ResponseEntity<?> register(@Valid @RequestBody final ProductRegisterDTO productRegisterDTO) {
         return this.registrationService.registerProduct(productRegisterDTO);
     }
+
+    @PostMapping("/register-size/{product_id}")
+    public ResponseEntity<?> register(
+            @Valid @RequestBody final ProductSizeRegisterDTO productSizeRegisterDTO,
+            @PathVariable final Long product_id) {
+        return this.registrationService.registerSizeOrVariant(product_id, productSizeRegisterDTO);
+    }
+
+    @PostMapping("/register-image/{product_id}")
+    public ResponseEntity<?> register(
+            @Valid @RequestBody final ProductImageRegisterDTO productImageRegisterDTO,
+            @PathVariable final Long product_id
+            ) {
+        return this.registrationService.registerImage(product_id, productImageRegisterDTO);
+    }
+
 }

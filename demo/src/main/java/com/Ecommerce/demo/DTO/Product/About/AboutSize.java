@@ -14,6 +14,7 @@ public final class AboutSize {
 
     private long id;
 
-    private Integer size; //size of the jewelry
+    private int intSize;
+    private double dblSize; //size of the jewelry
     private int quantity; // Quantity of the jewelery size
 }

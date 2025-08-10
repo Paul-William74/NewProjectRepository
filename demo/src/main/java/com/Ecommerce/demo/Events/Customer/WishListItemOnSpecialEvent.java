@@ -22,10 +22,10 @@ public final class WishListItemOnSpecialEvent extends ApplicationEvent implement
     private final EmailSender emailSender;
 
     public WishListItemOnSpecialEvent(Object source, EmailSender emailSender,
-                                      Customer customer, ProductVariant productVariant,
-                                      MATERIAL material, Formatter formatter) {
+                                      Customer customer, ProductSize productVariant,
+                                      MATERIAL material, Formatter formatter, ProductPrice productPrice) {
         super(source);
-        this.emailContent =buildItemOnSaleMessageContent(material, customer, productVariant);
+        this.emailContent =buildItemOnSaleMessageContent(material, customer, productPrice, productVariant);
         this.emailSender = emailSender;
         this.email= customer.getEmail();
         this.formatter = formatter;
@@ -43,32 +43,30 @@ public final class WishListItemOnSpecialEvent extends ApplicationEvent implement
     }
 
 
-    private String buildItemOnSaleMessageContent(MATERIAL material, Customer customer, ProductVariant productVariant) {
+    private String buildItemOnSaleMessageContent(MATERIAL material, Customer customer, ProductPrice productPrice, ProductSize productSize) {
 
-        ProductSize productSize = productVariant.getProductSize(); //get the size
-        Product product = productSize.getProduct(); //get the product
+        Product product =  productPrice.getProduct();
         String imgUrl = getImageUrlFromMaterial(productSize, material).getImgUrl(); //ge the image url
 
-        String originalPrice = formatter.getFormattedPrice(product.getBasePrice()); //get the original price
-        String salePrice = formatter.getFormattedPrice(product.getBasePrice() - (product.getBasePrice() * product.getDiscountPercentage()));
-        String discountPercentage = String.valueOf(product.getDiscountPercentage() * 100); // re format the percentage
+        String originalPrice = formatter.getFormattedPrice(productPrice.getBasePrice()); //get the original price
+        String salePrice = formatter.getFormattedPrice(productPrice.getBasePrice() - (productPrice.getBasePrice() * productSize.getDiscountPercentage()));
+        String discountPercentage = String.valueOf(productSize.getDiscountPercentage() * 100); // re format the percentage
 
 
-        String quntity = String.valueOf(productVariant.getQuantity()); //get the quantity that's left
+        String quantity = String.valueOf(productSize.getQuantity()); //get the quantity that's left
         String sizeId = String.valueOf(productSize.getId()); //get the sizeId
         String size = String.valueOf(productSize.getSize()); //get the size literal
 
         return WishlistItemOnSpecial.buildWishlistSaleEmail(customer.getFirstName(),
                 customer.getLastName(), imgUrl, material.getLabel(), size, sizeId, originalPrice,
-                salePrice, discountPercentage, quntity,null);
+                salePrice, discountPercentage, quantity,null);
     }
 
 
     private ProductImage getImageUrlFromMaterial(ProductSize productSize, MATERIAL material) {
 
         String name = productSize.getProduct().getName();
-        Product product = productSize.getProduct();
-        return product.getProductImages().stream()
+        return productSize.getProduct().getProductImages().stream()
                 .filter(productImage ->  productImage.getMaterial() .equals(material))
                 .findFirst()
                 .orElseThrow(() -> new RuntimeException(name + " With Size " + productSize.getSize() + " with material " + material
