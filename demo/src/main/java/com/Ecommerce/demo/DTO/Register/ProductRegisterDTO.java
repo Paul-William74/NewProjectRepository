@@ -7,9 +7,11 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public final class ProductRegisterDTO {
 
     private String name;
     private String description;
+    private String k;
     // more will be implemented later
 }

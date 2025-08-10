@@ -38,7 +38,7 @@ public final class Product {
     private Double basePrice;
 
     @Column(nullable = false)
-    private Double discountPercentage;
+    private Double discountPercentage = 0.0;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
