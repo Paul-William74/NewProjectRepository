@@ -12,6 +12,10 @@ public final class ProductRegisterDTO {
 
     private String name;
     private String description;
-    private String k;
+    private String jeweleryType;
+    private List<String> gemStones;
+
+    private Double basePrice;
+
     // more will be implemented later
 }
