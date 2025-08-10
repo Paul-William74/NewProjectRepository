@@ -5,21 +5,21 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/admins")
-public class AdminController {
+public class AdminAnalyticsController {
 
 
-    @GetMapping("/getProducts/{admin_id}")
-    public ResponseEntity<?> getAllAdminProducts(@PathVariable final Long admin_id) {
+    @GetMapping("/getProducts")
+    public ResponseEntity<?> getAllAdminProducts() {
         return null;
     }
 
-    @GetMapping("/getMostSold/{admin_id}")
-    public ResponseEntity<?> getMostSold(@PathVariable final Long admin_id) {
+    @GetMapping("/getMostSold")
+    public ResponseEntity<?> getMostSold() {
         return null;
     }
 
-    @GetMapping("/getLeastSold/{admin_id}")
-    public ResponseEntity<?> getLeastSold(@PathVariable final Long admin_id) {
+    @GetMapping("/getLeastSold/")
+    public ResponseEntity<?> getLeastSold() {
         return null;
     }
 
