@@ -2,11 +2,15 @@ package com.Ecommerce.demo.Mapper;
 
 
 import com.Ecommerce.demo.Components.Formatter;
+import com.Ecommerce.demo.DTO.Product.About.AboutSize;
 import com.Ecommerce.demo.DTO.Product.About.ProductAdditionalInformation;
 import com.Ecommerce.demo.DTO.Product.About.RecommendedProduct;
 import com.Ecommerce.demo.DTO.Product.About.AboutProduct;
+import com.Ecommerce.demo.DTO.Product.Admin.AdminProduct;
+import com.Ecommerce.demo.DTO.Product.Admin.AdminProductSize;
 import com.Ecommerce.demo.DTO.Register.ProductRegisterDTO;
 import com.Ecommerce.demo.Model.Product.*;
+import com.Ecommerce.demo.Model.User.Admin;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
@@ -26,11 +30,6 @@ public abstract class ProductMapper {
     @Autowired private Formatter formatter;
 
 
-    abstract Product toProduct(ProductRegisterDTO productRegisterDTO);
-
-    abstract RecommendedProduct toRecommendedProduct(Product product);
-
-    abstract List<RecommendedProduct> toRecommendedProducts(List<Product> products);
 
     @Named("mapGemStones")
     List<String> mapGemStones(Set<GEMSTONE> gemstones) {
@@ -91,5 +90,47 @@ public abstract class ProductMapper {
         @Mapping(target = "gemstones", source = "gemStones", qualifiedByName = "mapGemStones"), //map the gemstones to a list of strings
     })
     public abstract AboutProduct toAboutProduct(Product product);
+
+
+    public abstract Product toProduct(ProductRegisterDTO productRegisterDTO);
+
+    public abstract RecommendedProduct toRecommendedProduct(Product product);
+
+    public abstract List<RecommendedProduct> toRecommendedProducts(List<Product> products);
+
+
+    public AdminProduct toAdminProduct(Product product) {
+
+        AdminProduct adminProduct = new AdminProduct(
+                product.getId(),
+                product.getName(),
+                product.getDescription(),
+                product.getJeweleryType().getType()
+        );
+        for(ProductSize productSize: product.getProductSizes())
+            adminProduct.getProductSizes().add(
+                    new AdminProductSize(
+                            productSize.getId(),
+                            getSizesWithMaterials(productSize)
+                    )
+            );
+        return adminProduct;
+    }
+
+    private Map<String, List<String>> getSizesWithMaterials(ProductSize productSize) {
+        return productSize.getProductVariants().stream()
+                .collect(Collectors.groupingBy(
+                        variant -> variant.getMaterial().getLabel(),
+                        Collectors.mapping(
+                                variant ->
+                                        String.valueOf(productSize.getSize() % 1 == 0 ?
+                                                productSize.getSize().intValue() :  //if there's no remainder store the integer
+                                                productSize.getSize()), //if there's a remainder store it with the remainder
+                                Collectors.toList()
+                        )
+                ));
+    }
+
+    public abstract List<AdminProduct> toAdminProducts(List<Product> products);
 
 }

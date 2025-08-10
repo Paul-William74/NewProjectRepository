@@ -6,8 +6,11 @@ import com.Ecommerce.demo.DTO.Register.AdminRegisterDTO;
 import com.Ecommerce.demo.DTO.Register.CustomerRegisterDTO;
 import com.Ecommerce.demo.DTO.Register.UserRegisterDTO;
 import com.Ecommerce.demo.Exception.User.UserNotFoundException;
+import com.Ecommerce.demo.Mapper.ProductMapper;
 import com.Ecommerce.demo.Mapper.UserMapper;
+import com.Ecommerce.demo.Model.Product.Product;
 import com.Ecommerce.demo.Model.User.Customer;
+import com.Ecommerce.demo.Repository.Product.ProductsRepo;
 import com.Ecommerce.demo.Repository.UserRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -24,6 +27,8 @@ public class RegistrationService {
     private final BCryptPasswordEncoder passwordEncoder;
     private final UserRepo userRepo;
     private final UserMapper userMapper;
+    private final ProductMapper productMapper;
+    private final ProductsRepo productsRepo;
     private final NotificationHandler notificationHandler;
 
     public ResponseEntity<?> registerUser(UserRegisterDTO userRegisterDTO) {
@@ -36,9 +41,15 @@ public class RegistrationService {
         throw new UserNotFoundException("User Could Not Be Found");
     }
 
-    @Transactional
+
     public ResponseEntity<?> registerProduct(ProductRegisterDTO productRegisterDTO) {
-        return null;
+
+        Product product = this.productMapper.toProduct(productRegisterDTO);
+
+        this.productsRepo.save(product);
+
+
+        return ResponseEntity.ok(null);
     }
 
     private ResponseEntity<?> handleCustomerRegistration(CustomerRegisterDTO customerRegisterDTO) {

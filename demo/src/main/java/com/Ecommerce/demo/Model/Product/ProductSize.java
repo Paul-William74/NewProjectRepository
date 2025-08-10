@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -22,4 +24,7 @@ public final class ProductSize {
 
     @ManyToOne @JoinColumn(nullable = false)
     private Product product;
+
+    @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, mappedBy = "productSize")
+    private List<ProductVariant> productVariants = new LinkedList<>();
 }
