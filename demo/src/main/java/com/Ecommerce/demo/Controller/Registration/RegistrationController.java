@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/registrations")
@@ -36,6 +38,11 @@ public class RegistrationController {
     @PostMapping("/register-product")
     public ResponseEntity<?> register(@Valid @RequestBody final ProductRegisterDTO productRegisterDTO) {
         return this.registrationService.registerProduct(productRegisterDTO);
+    }
+
+    @PostMapping("/register-products")
+    public ResponseEntity<?> register(@Valid @RequestBody final List<ProductRegisterDTO> productRegisterDTOList) {
+        return this.registrationService.registerProducts(productRegisterDTOList);
     }
 
 

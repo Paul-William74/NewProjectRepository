@@ -15,4 +15,7 @@ public final class ProductImageRegisterDTO {
 
     @NotBlank(message = "Material Field Needs To Be Filled")
     private String material;
+
+    @NotBlank
+    private String imageType;
 }

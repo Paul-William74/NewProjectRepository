@@ -34,6 +34,9 @@ public final class ProductPrice {
     private boolean onDiscount = false;
 
     @Column(nullable = false)
+    private boolean isActive = false;
+
+    @Column(nullable = false)
     private Double discountPercentage  =0.0;
 
     @Column(nullable = false)

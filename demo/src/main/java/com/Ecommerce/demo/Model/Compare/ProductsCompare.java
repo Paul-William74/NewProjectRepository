@@ -24,4 +24,10 @@ public final class ProductsCompare {
 
     @ManyToOne @JoinColumn(nullable = false)
     private Product product;
+
+
+    public ProductsCompare(Customer customer, Product product) {
+        this.customer = customer;
+        this.product = product;
+    }
 }

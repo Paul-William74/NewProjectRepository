@@ -20,7 +20,6 @@ public final class AdminProduct {
     private String jewelleryType;
 
     private final List<AdminProductImage> productImages = new LinkedList<>();
-    private final List<AdminProductSize> productSizes = new LinkedList<>();
     private final List<String> gemStones = new LinkedList<>();
 
 }

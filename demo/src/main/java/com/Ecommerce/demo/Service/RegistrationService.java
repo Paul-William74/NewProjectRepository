@@ -23,6 +23,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.LinkedList;
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class RegistrationService extends BaseService {
@@ -57,22 +60,47 @@ public class RegistrationService extends BaseService {
         return ResponseEntity.ok(product);
     }
 
+    @Transactional
+    public ResponseEntity<?> registerProducts(List<ProductRegisterDTO> productRegisterDTOList) {
+
+        List<Product> products = new LinkedList<>();
+        for(ProductRegisterDTO productRegisterDTO: productRegisterDTOList) {
+            Product product = this.productMapper.toProduct(productRegisterDTO);
+            ProductPrice productPrice = this.productPriceMapper.toProductPrice(productRegisterDTO.getProductPrice());
+
+            productPrice.setProduct(product);
+            product.getProductPrices().add(productPrice);
+            products.add(product);
+        }
+        this.productsRepo.saveAll(products);
+        return ResponseEntity.ok(products);
+    }
+
+
     public ResponseEntity<?> registerProductPrice(Long product_id, ProductPriceRegisterDTO productPriceRegisterDTO) {
 
         Product product = findProduct(product_id);
         ProductPrice productPrice = productPriceMapper.toProductPrice(productPriceRegisterDTO);
 
         productPrice.setProduct(product); // set the product reference;
-
         return ResponseEntity.ok(productPrice);
     }
+
 
     public ResponseEntity<?> registerImage(Long product_Id, ProductImageRegisterDTO productImageRegisterDTO) {
 
         MATERIAL material = MATERIAL.getMaterialFromLabel(productImageRegisterDTO.getMaterial());
         Product product = findProduct(product_Id);
+        IMAGE_TYPE imageType = IMAGE_TYPE.fromLabel(productImageRegisterDTO.getImageType());
 
-        ProductImage productImage = new ProductImage(material, product, productImageRegisterDTO.getImgUrl());
+        boolean exists = product.getProductPrices().stream()
+                .anyMatch(pp -> pp.getMaterial().equals(material));
+
+        if(!exists)
+            return ResponseEntity.badRequest().body("No " + product.getName() + " exists in " + material.getLabel());
+
+
+        ProductImage productImage = new ProductImage(material, product, productImageRegisterDTO.getImgUrl(), imageType);
         ProductImage newImageEntry = this.productImageRepo.save(productImage);
 
         AdminProductImage adminProductImage = new AdminProductImage(newImageEntry.getId(),

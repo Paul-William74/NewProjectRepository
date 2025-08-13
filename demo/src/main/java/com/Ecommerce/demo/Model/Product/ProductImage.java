@@ -21,6 +21,10 @@ public final class ProductImage {
     @Column(nullable = false)
     private String imgUrl;
 
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private IMAGE_TYPE imageType;
+
     @ManyToOne (optional = false) @JoinColumn(nullable = false)
     private Product product;
 
@@ -29,10 +33,11 @@ public final class ProductImage {
     private MATERIAL material;
 
 
-    public ProductImage(MATERIAL material, Product product, String imgUrl) {
+    public ProductImage(MATERIAL material, Product product, String imgUrl, IMAGE_TYPE imageType) {
         this.material = material;
         this.product = product;
         this.imgUrl = imgUrl;
+        this.imageType = imageType;
     }
 }
 
