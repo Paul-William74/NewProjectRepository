@@ -2,7 +2,6 @@ package com.Ecommerce.demo.Controller.Registration;
 
 import com.Ecommerce.demo.DTO.Register.Product.ProductImageRegisterDTO;
 import com.Ecommerce.demo.DTO.Register.Product.ProductRegisterDTO;
-import com.Ecommerce.demo.DTO.Register.Product.ProductSizeRegisterDTO;
 import com.Ecommerce.demo.DTO.Register.UserRegisterDTO;
 import com.Ecommerce.demo.Service.RegistrationService;
 import jakarta.validation.Valid;

@@ -3,18 +3,19 @@ package com.Ecommerce.demo.Service;
 import com.Ecommerce.demo.Components.Publisher.NotificationHandler;
 import com.Ecommerce.demo.DTO.Product.Admin.AdminProductImage;
 import com.Ecommerce.demo.DTO.Register.Product.ProductImageRegisterDTO;
+import com.Ecommerce.demo.DTO.Register.Product.ProductPriceRegisterDTO;
 import com.Ecommerce.demo.DTO.Register.Product.ProductRegisterDTO;
 import com.Ecommerce.demo.DTO.Register.AdminRegisterDTO;
 import com.Ecommerce.demo.DTO.Register.CustomerRegisterDTO;
-import com.Ecommerce.demo.DTO.Register.Product.ProductSizeRegisterDTO;
 import com.Ecommerce.demo.DTO.Register.UserRegisterDTO;
-import com.Ecommerce.demo.Exception.Enum.JewelleryTyeDoesNotExistException;
 import com.Ecommerce.demo.Exception.User.UserNotFoundException;
 import com.Ecommerce.demo.Mapper.ProductMapper;
+import com.Ecommerce.demo.Mapper.ProductPriceMapper;
 import com.Ecommerce.demo.Mapper.UserMapper;
 import com.Ecommerce.demo.Model.Product.*;
 import com.Ecommerce.demo.Model.User.Customer;
 import com.Ecommerce.demo.Repository.Product.ProductImageRepo;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -29,6 +30,7 @@ public class RegistrationService extends BaseService {
     private final BCryptPasswordEncoder passwordEncoder;
     private final UserMapper userMapper;
     private final ProductMapper productMapper;
+    private final ProductPriceMapper productPriceMapper;
     private final NotificationHandler notificationHandler;
     private final ProductImageRepo productImageRepo;
 
@@ -43,9 +45,26 @@ public class RegistrationService extends BaseService {
         throw new UserNotFoundException("User Could Not Be Found");
     }
 
+    @Transactional
     public ResponseEntity<?> registerProduct(ProductRegisterDTO productRegisterDTO) {
 
-        return ResponseEntity.ok(null);
+        Product product = productMapper.toProduct(productRegisterDTO);
+        ProductPrice productPrice = productPriceMapper.toProductPrice(productRegisterDTO.getProductPrice());
+        productPrice.setProduct(product); //reference the product back
+
+        product.getProductPrices().add(productPrice); //add that product price to the products list to save
+        this.productsRepo.save(product); //save changes to the database
+        return ResponseEntity.ok(product);
+    }
+
+    public ResponseEntity<?> registerProductPrice(Long product_id, ProductPriceRegisterDTO productPriceRegisterDTO) {
+
+        Product product = findProduct(product_id);
+        ProductPrice productPrice = productPriceMapper.toProductPrice(productPriceRegisterDTO);
+
+        productPrice.setProduct(product); // set the product reference;
+
+        return ResponseEntity.ok(productPrice);
     }
 
     public ResponseEntity<?> registerImage(Long product_Id, ProductImageRegisterDTO productImageRegisterDTO) {

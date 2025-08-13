@@ -1,7 +1,10 @@
 package com.Ecommerce.demo.Model.Product;
 
 import com.Ecommerce.demo.Exception.Enum.JewelleryTyeDoesNotExistException;
+import com.Ecommerce.demo.Exception.Enum.MaterialDoesNotExistException;
 import lombok.Getter;
+
+import java.util.Arrays;
 
 @Getter
 public enum JEWELERY_TYPE {
@@ -18,9 +21,9 @@ public enum JEWELERY_TYPE {
     }
 
     public static JEWELERY_TYPE  getJewelleryTypeFromLabel(String label) throws JewelleryTyeDoesNotExistException {
-        for(JEWELERY_TYPE jeweleryType: JEWELERY_TYPE.values())
-            if(jeweleryType.type.equals(label))
-                return jeweleryType;
-        throw new JewelleryTyeDoesNotExistException("jewellery piece: " + label + " does not exist");
+        return Arrays.stream(JEWELERY_TYPE.values())
+                .filter( material -> material.getType().equals(label))
+                .findFirst()
+                .orElseThrow(() -> new JewelleryTyeDoesNotExistException("Jewellery Type: " + label + " Does not Exist"));
     }
 }

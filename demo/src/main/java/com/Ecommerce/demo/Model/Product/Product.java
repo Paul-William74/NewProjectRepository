@@ -31,9 +31,6 @@ public final class Product {
     private String description;
 
     @Column(nullable = false)
-    private boolean onDiscount = false;
-
-    @Column(nullable = false)
     private boolean isActive = true;
 
     @Enumerated(EnumType.STRING)

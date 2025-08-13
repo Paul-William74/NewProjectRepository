@@ -1,6 +1,5 @@
 package com.Ecommerce.demo.DTO.Register.Product;
 
-
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -10,14 +9,11 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public final class ProductSizeRegisterDTO {
+public class ProductPriceRegisterDTO {
 
-    @NotBlank(message = "size cannot be empty")
-    private String size;
-
-    @NotBlank(message = "Material Field Needs To Be Filled")
+    @NotBlank(message = "material filed Is Empty")
     private String material;
 
-    @NotNull(message = "quantity field cannot be empty")
-    private int quantity;
+    @NotNull(message = "base Price field Is Empty")
+    private double basePrice;
 }
