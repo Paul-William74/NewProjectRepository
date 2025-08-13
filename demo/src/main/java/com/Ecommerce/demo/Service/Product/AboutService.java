@@ -1,8 +1,6 @@
 package com.Ecommerce.demo.Service.Product;
 
-
-import com.Ecommerce.demo.DTO.Product.About.AboutProduct;
-import com.Ecommerce.demo.DTO.Product.About.ProductAdditionalInformation;
+import com.Ecommerce.demo.Components.Formatter;
 import com.Ecommerce.demo.Mapper.ProductMapper;
 import com.Ecommerce.demo.Model.Product.Product;
 import com.Ecommerce.demo.Service.BaseService;
@@ -10,11 +8,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+
 @Service
 @RequiredArgsConstructor
 public class AboutService extends BaseService {
 
     private final ProductMapper productMapper;
+    private final Formatter formatter;
 
     /**
      * gets a product along with all its details
@@ -24,11 +24,10 @@ public class AboutService extends BaseService {
     public ResponseEntity<?> getProduct(Long productId) {
 
         Product product = this.findProduct(productId); //get the product by ID
-        AboutProduct aboutProduct = this.productMapper.toAboutProduct(product); //map the product to AboutProduct___ DTO
+
 
         double totalProductRating = this.reviewRepo.findAverageRatingByProductId(productId); //get the average rating of that product
-        aboutProduct.setTotalRating(totalProductRating); //set the total rating of that product
-        return ResponseEntity.ok(aboutProduct);
+        return ResponseEntity.ok(null);
     }
 
 
@@ -41,8 +40,17 @@ public class AboutService extends BaseService {
         Product product = this.findProduct(productId); //get the product by ID
 
         //map the product to ProductAdditionalInformation DTO
-        ProductAdditionalInformation productAdditionalInf = this.productMapper.toProductAdditionalInformation(product);
-        return ResponseEntity.ok(productAdditionalInf);
+
+        return ResponseEntity.ok(null);
+    }
+
+
+    public ResponseEntity<?> getRecommendedProducts(Long product_id) {
+
+
+        Product product = findProduct(product_id);
+
+        return ResponseEntity.ok("");
     }
 
 }

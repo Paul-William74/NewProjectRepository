@@ -1,6 +1,5 @@
 package com.Ecommerce.demo.Components.Publisher;
 
-import com.Ecommerce.demo.Model.Product.ProductSize;
 import com.Ecommerce.demo.Model.User.Customer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Async;
@@ -12,11 +11,11 @@ public class WaitingListPublisher extends Publisher {
 
 
     @Async
-    public void publishWaitingListEntryAdded(Customer customer, ProductSize productSize) {
+    public void publishWaitingListEntryAdded(Customer customer) {
         applicationEventPublisher.publishEvent(null);
     }
 
     @Async
-    public void publishRestockedProductsFromWaitingList(Customer customer, ProductSize productSize) {}
+    public void publishRestockedProductsFromWaitingList(Customer customer) {}
 
 }

@@ -38,6 +38,12 @@ public class AboutController {
     }
 
 
+    @PostMapping("/getRecommendedProducts/{product_id}")
+    public ResponseEntity<?> getRecommendedProducts(
+            @PathVariable final Long product_id
+    ) {
+        return null;
+    }
 
 
 }

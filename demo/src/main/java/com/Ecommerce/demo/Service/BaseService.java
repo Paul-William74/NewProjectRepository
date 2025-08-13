@@ -10,7 +10,6 @@ import com.Ecommerce.demo.Model.Cart.CART_STATUS;
 import com.Ecommerce.demo.Model.Cart.Cart;
 import com.Ecommerce.demo.Model.Compare.ProductsCompare;
 import com.Ecommerce.demo.Model.Product.Product;
-import com.Ecommerce.demo.Model.Product.ProductSize;
 import com.Ecommerce.demo.Model.Review.Review;
 import com.Ecommerce.demo.Model.User.Admin;
 import com.Ecommerce.demo.Model.User.Customer;
@@ -18,7 +17,6 @@ import com.Ecommerce.demo.Model.User.User;
 import com.Ecommerce.demo.Repository.*;
 import com.Ecommerce.demo.Repository.Cart.CartRepo;
 import com.Ecommerce.demo.Repository.Product.ProductCompareRepo;
-import com.Ecommerce.demo.Repository.Product.ProductSizeRepo;
 import com.Ecommerce.demo.Repository.Product.ProductsRepo;
 import com.Ecommerce.demo.Repository.Review.ReviewRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +30,6 @@ public class BaseService {
     @Autowired protected CartRepo cartRepo;
 
     @Autowired protected ProductsRepo productsRepo;
-    @Autowired protected ProductSizeRepo productSizeRepo;
     @Autowired protected ProductCompareRepo productCompareRepo;
 
     @Autowired protected ReviewRepo reviewRepo;
@@ -81,10 +78,6 @@ public class BaseService {
                 .orElseThrow(() -> new ProductNotFoundException("Product does not exist"));
     }
 
-    protected ProductSize findProductSize(Long productSize_id) {
-        return this.productSizeRepo.findById(productSize_id)
-                .orElseThrow(() -> new ProductNotFoundException("Product Size does not exist"));
-    }
 
     protected ProductsCompare findProductsCompare(Customer customer, Product product) {
         return this.productCompareRepo.findByProductAndCustomer(product, customer)

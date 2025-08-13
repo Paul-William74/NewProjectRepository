@@ -39,12 +39,6 @@ public class RegistrationController {
         return this.registrationService.registerProduct(productRegisterDTO);
     }
 
-    @PostMapping("/register-size/{product_id}")
-    public ResponseEntity<?> register(
-            @Valid @RequestBody final ProductSizeRegisterDTO productSizeRegisterDTO,
-            @PathVariable final Long product_id) {
-        return this.registrationService.registerSizeOrVariant(product_id, productSizeRegisterDTO);
-    }
 
     @PostMapping("/register-image/{product_id}")
     public ResponseEntity<?> register(

@@ -49,8 +49,6 @@ public final class Product {
     private final Set<GEMSTONE> gemStones = new HashSet<>();
 
     /// one to many relationships
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-    private final List<ProductSize> productSizes = new LinkedList<>(); // List of product sizes available for this product
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private final List<ProductImage> productImages = new LinkedList<>(); // List of images associated with this product

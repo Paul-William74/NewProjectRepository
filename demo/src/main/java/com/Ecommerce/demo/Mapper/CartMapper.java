@@ -21,58 +21,6 @@ import java.util.stream.Collectors;
 public abstract class CartMapper {
 
     @Autowired private Formatter formatter;
-    @Autowired private Sorter sorter;
 
 
-//    public String mapPrice(CartItem cartItem) {
-//
-//
-//        if(cartItem.getProductSize().isOnDiscount()) {
-//
-//            Double discountedPrice = cartItem.getProductSize().getBasePrice() - (product.getBasePrice() * product.getDiscountPercentage() / 100);
-//            return formatter.getFormattedPrice(discountedPrice); //if the product is on discount
-//        }
-//        return formatter.getFormattedPrice(product.getBasePrice()); //if the product is not on discount
-//    }
-
-    public int mapQuantity(CartItem cartItem) {
-        return cartItem.getQuantity();
-    }
-
-    public String mapName(CartItem cartItem) {
-        return cartItem.getProductSize().getProduct().getName();
-    }
-
-    public String mapImage(CartItem cartItem) {
-        return "";
-    }
-
-    public double mapSize(CartItem cartItem) {
-        return cartItem.getProductSize().getSize();
-    }
-
-    public Set<String> mapMaterials(CartItem cartItem) {
-        return cartItem.getMaterial().stream()
-                .map(MATERIAL::getLabel)
-                .collect(Collectors.toSet());
-    }
-
-    public Set<String> gemStones(CartItem cartItem) {
-        return cartItem.getProductSize().getProduct().getGemStones()
-                .stream()
-                .map(GEMSTONE::getLabel)
-                .collect(Collectors.toSet());
-    }
-
-
-    @Mappings({
-            @Mapping(target= "quantity", expression = "java(mapQuantity(cartItem))"),
-            @Mapping(target = "name", expression = "java(mapName(cartItem))"),
-            @Mapping(target = "size", expression = "java(mapSize(cartItem))"),
-            @Mapping(target = "imgUrl", expression = "java(mapImage(cartItem))"),
-            @Mapping(target = "materials", expression = "java(mapMaterials(cartItem))"),
-            @Mapping(target = "gemStones", expression = "java(gemStones(cartItem))")
-    })
-    public abstract CartProduct toCartProduct(CartItem cartItem);
-    public abstract List<CartProduct> toCartProducts(List<CartItem> cartItems);
 }

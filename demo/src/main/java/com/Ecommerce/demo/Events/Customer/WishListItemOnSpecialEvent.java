@@ -22,10 +22,10 @@ public final class WishListItemOnSpecialEvent extends ApplicationEvent implement
     private final EmailSender emailSender;
 
     public WishListItemOnSpecialEvent(Object source, EmailSender emailSender,
-                                      Customer customer, ProductSize productVariant,
+                                      Customer customer,
                                       MATERIAL material, Formatter formatter, ProductPrice productPrice) {
         super(source);
-        this.emailContent =buildItemOnSaleMessageContent(material, customer, productPrice, productVariant);
+        this.emailContent = "";
         this.emailSender = emailSender;
         this.email= customer.getEmail();
         this.formatter = formatter;
@@ -40,36 +40,5 @@ public final class WishListItemOnSpecialEvent extends ApplicationEvent implement
         }catch (Exception e) {
 
         }
-    }
-
-
-    private String buildItemOnSaleMessageContent(MATERIAL material, Customer customer, ProductPrice productPrice, ProductSize productSize) {
-
-        Product product =  productPrice.getProduct();
-        String imgUrl = getImageUrlFromMaterial(productSize, material).getImgUrl(); //ge the image url
-
-        String originalPrice = formatter.getFormattedPrice(productPrice.getBasePrice()); //get the original price
-        String salePrice = formatter.getFormattedPrice(productPrice.getBasePrice() - (productPrice.getBasePrice() * productSize.getDiscountPercentage()));
-        String discountPercentage = String.valueOf(productSize.getDiscountPercentage() * 100); // re format the percentage
-
-
-        String quantity = String.valueOf(productSize.getQuantity()); //get the quantity that's left
-        String sizeId = String.valueOf(productSize.getId()); //get the sizeId
-        String size = String.valueOf(productSize.getSize()); //get the size literal
-
-        return WishlistItemOnSpecial.buildWishlistSaleEmail(customer.getFirstName(),
-                customer.getLastName(), imgUrl, material.getLabel(), size, sizeId, originalPrice,
-                salePrice, discountPercentage, quantity,null);
-    }
-
-
-    private ProductImage getImageUrlFromMaterial(ProductSize productSize, MATERIAL material) {
-
-        String name = productSize.getProduct().getName();
-        return productSize.getProduct().getProductImages().stream()
-                .filter(productImage ->  productImage.getMaterial() .equals(material))
-                .findFirst()
-                .orElseThrow(() -> new RuntimeException(name + " With Size " + productSize.getSize() + " with material " + material
-                +" Does not Exist"));
     }
 }

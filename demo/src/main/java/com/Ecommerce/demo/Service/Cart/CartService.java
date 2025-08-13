@@ -28,22 +28,6 @@ public class CartService extends BaseService {
         Customer customer = this.findCustomer(customerId); //find the customer by ID
         Cart cart = this.findCustomerCart(customer, CART_STATUS.ACTIVE); //find that customer's active cart
 
-
-        List<CartProduct> cartProducts = this.cartMapper.toCartProducts(cart.getCartItemList()); //map the cart items to CartProduct DTOs
-
-        //if the cart is empty, return an empty CartProductsContainer to avoid using more resources
-        if( cartProducts.isEmpty())
-            return ResponseEntity.ok(new CartProductsContainer(0,
-                    new LinkedList<>(), "R0.00"));
-
-
-        String formattedPrice = formatter.getFormattedPrice(cart.getTotal()); //get the total price of the cart and format it
-        CartProductsContainer cartProductsContainer = new CartProductsContainer(
-                cart.getCartItemList().size(), //total number of items in the cart
-                cartProducts, //list of CartProduct DTOs
-                formattedPrice //total price of the cart
-        );
-
-        return ResponseEntity.ok(cartProductsContainer); //return the CartProductsContainer
+        return ResponseEntity.ok(null); //return the CartProductsContainer
     }
 }

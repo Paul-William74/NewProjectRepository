@@ -45,29 +45,8 @@ public class RegistrationService extends BaseService {
 
     public ResponseEntity<?> registerProduct(ProductRegisterDTO productRegisterDTO) {
 
-        Product product;
-        try {
-            product = this.productMapper.toProduct(productRegisterDTO);
-        }catch (JewelleryTyeDoesNotExistException ex) {
-            return ResponseEntity.badRequest().body(ex.getMessage());
-        }
-
-        this.productsRepo.save(product);
-
-
         return ResponseEntity.ok(null);
     }
-
-    public ResponseEntity<?> registerSizeOrVariant(Long productId, ProductSizeRegisterDTO dto) {
-
-        MATERIAL material = MATERIAL.getMaterialFromLabel(dto.getMaterial());
-        Product product = findProduct(productId);
-        Double size = Double.parseDouble(dto.getSize());
-
-
-        return ResponseEntity.ok(null);
-    }
-
 
     public ResponseEntity<?> registerImage(Long product_Id, ProductImageRegisterDTO productImageRegisterDTO) {
 
@@ -81,7 +60,6 @@ public class RegistrationService extends BaseService {
                 productImage.getImgUrl()); //create a product image dto
         return ResponseEntity.ok(adminProductImage); //return the image
     }
-
 
     private ResponseEntity<?> handleCustomerRegistration(CustomerRegisterDTO customerRegisterDTO) {
 
